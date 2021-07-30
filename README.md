@@ -62,4 +62,4 @@ Note the data should be in *.csv* format. The **main** function will return a *.
 
 ### Example
 
-![plot](https://github.com/ElvisCuiHan/scBCM/blob/master/Figures/100ZIP.png?raw=true)
+![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?raw=true)
