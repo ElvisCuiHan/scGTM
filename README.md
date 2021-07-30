@@ -30,3 +30,22 @@ and then run
 $ cd scBCM
 $ python setup.py install
 ```
+
+## Usage
+
+scBCM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
+
+### All-in-one function
+
+You can import scBCM as any other Python module,
+
+```python
+import pyswarms as ps
+```
+
+Suppose we have a 
+```latex
+hi
+```
+
+
