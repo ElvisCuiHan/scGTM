@@ -18,3 +18,15 @@ To install scBCM, run this command in your terminal:
 ```shell
 $ pip install -i https://test.pypi.org/simple/ scBCM==0.2
 ```
+
+This is the preferred method to install scBCM. In case you want to install the bleeding-edge version, clone this repo:
+
+```shell
+$ git clone -b development https://github.com/ElvisCuiHan/scBCM.git
+```
+and then run
+
+```shell
+$ cd scBCM
+$ python setup.py install
+```
