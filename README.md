@@ -35,15 +35,13 @@ $ python setup.py install
 
 scBCM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
 
-### All-in-one function
-
 You can import scBCM as any other Python module,
 
 ```python
 import pyswarms as ps
 ```
 
-Suppose we have a cell-by-gene matrix where the first column corresponding to the pseudotime:
+The data should be a cell-by-gene matrix where the first column corresponding to the pseudotime:
 ```math
 Index Pseudotime Gene1 Gene2 ...
 1.    t1         y11   y12   ...
@@ -51,5 +49,15 @@ Index Pseudotime Gene1 Gene2 ...
 3.    t3         y31   y32   ...
 4.    t4         y41   y42   ...
 ```
+
+### All-in-one function
+
+Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model, simply we call the **main** function:
+
+```python
+ main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YouDataPath, save_dir=YouTargetPath)
+```
+
+Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
 
 
