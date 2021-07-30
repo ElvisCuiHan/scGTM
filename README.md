@@ -60,4 +60,6 @@ Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model
 
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
 
+### Example
 
+![alt text](https://github.com/ElvisCuiHan/scBCM/blob/master/100ZIP.png?raw=true)
