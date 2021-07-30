@@ -44,7 +44,7 @@ import pyswarms as ps
 ```
 
 Suppose we have a cell-by-gene matrix where the first column corresponding to the pseudotime:
-```latex
+```math
 \text{YourData}=\left[\begin{matrix}\end{matrix}\right]
 ```
 
