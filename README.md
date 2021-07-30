@@ -43,9 +43,9 @@ You can import scBCM as any other Python module,
 import pyswarms as ps
 ```
 
-Suppose we have a 
+Suppose we have a cell-by-gene matrix where the first column corresponding to the pseudotime:
 ```latex
-hi
+\text{YourData}=\left[\begin{matrix}\end{matrix}\right]
 ```
 
 
