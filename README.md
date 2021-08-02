@@ -68,7 +68,7 @@ Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model
 plot_args={
              'color': ['red', 'tomato', 'orange', 'violet'],
              'cmap': 'Blues',
-         })
+         }
 ```
 
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
@@ -77,6 +77,10 @@ Note the data should be in *.csv* format. The **main** function will return a *.
 
 The following figure has shown a typical output by the `main` function in `BellShapeModel.py`.
 
-- `Red`
+- *Red line*: fitted log mean expression (log(tau_c) in the paper). 
+- *Blue line*: Red line minus -log(1-p_c) so that the zero-inflation part is removed from expectation.
+- *Orange vertical line*: Estimated t0, i.e., the turning point of the model.
+- *Purple line*: fitted zero-inflation parameter, for details, see paper.
+- *Scatters/Points*: observed log expression value (log(y+1)).
 
 ![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?raw=true)
