@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scBCM",
-    version="0.2",
+    version="0.3",
     author="Elvis Cui",
     author_email="elviscuihan@g.ucla.edu",
     description="Bell-shape Curve Model.",
