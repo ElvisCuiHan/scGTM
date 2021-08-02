@@ -52,16 +52,31 @@ Index Pseudotime Gene1 Gene2 ...
 
 ### All-in-one function
 
-Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model, simply we call the **main** function:
+Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model, simply we call the `main` function:
 
 ```python
- main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YouDataPath, save_dir=YouTargetPath)
+ main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YouDataPath, save_dir=YouTargetPath, plot_args={})
+```
+
+- `gene_index`: The index of gene that we want to model.
+- `marginal`: The marginal distribution of the gene expression, should be one of `["NB", "ZINB", "Poisson", "ZIP"]`.
+- `iter`: Number of iterations run by PSO, usually 150 suffices.
+- `data_dir`: The path to our data file.
+- `save_dir`: The directory to save our results.
+- `plot_args`: A dictionary with keys *color* and *cmap*. *color* is a 4x1 vector and *cmap* is a string. For example:
+```python
+plot_args={
+             'color': ['red', 'tomato', 'orange', 'violet'],
+             'cmap': 'Blues',
+         })
 ```
 
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
 
 ### Example
 
-The following figure has shown a typical output by the **main** function in `BellShapeModel.py`.
+The following figure has shown a typical output by the `main` function in `BellShapeModel.py`.
+
+- `Red`
 
 ![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?raw=true)
