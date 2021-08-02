@@ -6,13 +6,14 @@ from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from scipy.stats import nbinom, poisson
-from .pseudotimeAPI import *
-from .pseudotimeEstInfer import *
+from pseudotimeAPI import *
+from pseudotimeEstInfer import *
 
 import warnings
 warnings.filterwarnings("ignore")
 
-def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None):
+def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None, plot_args=None):
+
     print("Loading data......")
 
     ## LOAD DATA
@@ -78,12 +79,19 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
               np.round(gbest[:-1], 2), "\n")
 
     ## PLOTTING
+    if plot_args is not None:
+        color = plot_args['color']
+        cmap = plot_args['cmap']
+    else:
+        color = ['red', 'blue', 'orange', 'darkgreen']
+        cmap = 'PRGn'
+
     fig, ax = plt.subplots(figsize=(10, 8))
     log_data = np.log(y1 + 1)
-    plt.scatter(t, log_data, s=10, c=log_data, cmap=plt.get_cmap('PRGn'))
+    plt.scatter(t, log_data, s=10, c=log_data, cmap=plt.get_cmap(cmap))
     plt.ylim(np.min(log_data) - 1, np.max(log_data) + 1)
 
-    plot_result(gbest, t, ['red', 'pink', 'orange', 'darkgreen'], marginal=marginal)
+    plot_result(gbest, t, color, marginal=marginal)
 
     plt.title("Marginal: " + marginal + ". Gene: " + str(gene_name) + '.', fontsize=15)
     #plt.show()
@@ -146,3 +154,4 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         json.dump(result, fp)
 
     return result
+
