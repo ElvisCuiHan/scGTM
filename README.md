@@ -16,7 +16,7 @@ It is intended for bioinformatic scientists, applied statisticians, and students
 To install scBCM, run this command in your terminal:
 
 ```shell
-$ pip install -i https://test.pypi.org/simple/ scBCM==0.2
+$ pip install -i https://test.pypi.org/simple/ scBCM==0.3
 ```
 
 This is the preferred method to install scBCM. In case you want to install the bleeding-edge version, clone this repo:
@@ -61,5 +61,7 @@ Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
 
 ### Example
+
+The following figure has shown a typical output by the **main** function in `BellShapeModel.py`.
 
 ![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?raw=true)
