@@ -82,8 +82,7 @@ The following figure has shown a typical output by the `main` function in `BellS
 - *Orange vertical line*: Estimated t0, i.e., the turning point of the model.
 - *Purple line*: fitted zero-inflation parameter, for details, see paper.
 - *Scatters/Points*: observed log expression value (log(y+1)).
-
-```![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?width=30px)```
-<img src="https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png" width="500" />
+- 
+<img src="https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png" width="700" />
 
 The confidence intervals of `{t0, k1, k2, mu}` are saved in a `.json` file in the same directory.
