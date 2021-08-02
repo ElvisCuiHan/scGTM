@@ -84,5 +84,6 @@ The following figure has shown a typical output by the `main` function in `BellS
 - *Scatters/Points*: observed log expression value (log(y+1)).
 
 ![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?width=30px)
+<img src="https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png" width="50" />
 
 The confidence intervals of `{t0, k1, k2, mu}` are saved in a `.json` file in the same directory.
