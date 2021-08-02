@@ -83,6 +83,6 @@ The following figure has shown a typical output by the `main` function in `BellS
 - *Purple line*: fitted zero-inflation parameter, for details, see paper.
 - *Scatters/Points*: observed log expression value (log(y+1)).
 
-![](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png | width=100)
+![plot](https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png?s=100)
 
 The confidence intervals of `{t0, k1, k2, mu}` are saved in a `.json` file in the same directory.
