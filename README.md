@@ -3,9 +3,9 @@
 
 # scKGAM: Single-cell gene expression kinetics generalized additive model
 
-**scBCM** is the abbreviation for *Single-cell Bell Shape Curve Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
+**scKGAM** is the abbreviation for *Single-cell Gene Expression Kinetics Generalized Additive Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
 
-It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scBCM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
+It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scKGAM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
 * **Free software:** MIT license
 * **Documentation:** https://test.pypi.org/project/scBCM/0.2/.
@@ -16,13 +16,13 @@ It is intended for bioinformatic scientists, applied statisticians, and students
 To install scBCM, run this command in your terminal:
 
 ```shell
-$ pip install -i https://test.pypi.org/simple/ scBCM==0.3
+$ pip install -i https://test.pypi.org/simple/ scKGAM==0.4
 ```
 
-This is the preferred method to install scBCM. In case you want to install the bleeding-edge version, clone this repo:
+This is the preferred method to install scKGAM. In case you want to install the bleeding-edge version, clone this repo:
 
 ```shell
-$ git clone -b development https://github.com/ElvisCuiHan/scBCM.git
+$ git clone -b development https://github.com/ElvisCuiHan/scKGAM.git
 ```
 and then run
 
@@ -33,9 +33,9 @@ $ python setup.py install
 
 ## Usage
 
-scBCM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
+scKGAM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
 
-You can import scBCM as any other Python module,
+You can import scKGAMas any other Python module,
 
 ```python
 import pyswarms as ps
@@ -75,7 +75,7 @@ Note the data should be in *.csv* format. The **main** function will return a *.
 
 ### Example
 
-The following figure has shown a typical output by the `main` function in `BellShapeModel.py`.
+The following figure has shown a typical output by the `main` function in `scKGAM.py`.
 
 - *Red line*: fitted log mean expression (log(tau_c) in the paper). 
 - *Blue line*: Red line minus -log(1-p_c) so that the zero-inflation part is removed from expectation.
@@ -84,6 +84,6 @@ The following figure has shown a typical output by the `main` function in `BellS
 - *Scatters/Points*: observed log expression value (log(y+1)).
 
 
-<img src="https://github.com/ElvisCuiHan/scBCM/blob/main/Figures/100ZIP.png" width="700" />
+<img src="https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/100ZIP.png" width="700" />
 
 The confidence intervals of `{t0, k1, k2, mu}` are saved in a `.json` file in the same directory.
