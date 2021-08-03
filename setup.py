@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="scKGAM",
-    version="0.8",
+    version="0.9",
     author="Elvis Cui",
     author_email="elviscuihan@g.ucla.edu",
     description="Single-cell Gene Expression Kinetics Generalized Additive Model.",

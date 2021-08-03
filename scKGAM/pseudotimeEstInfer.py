@@ -1,5 +1,5 @@
 import numpy as np
-from .pseudotimeAPI import *
+from pseudotimeAPI import *
 import pyswarms as ps
 
 def estimation(y, t, marginal, iter=50):
@@ -22,12 +22,12 @@ def estimation(y, t, marginal, iter=50):
     n = 30
     if marginal in ["Poisson", "ZIP"]:
         d = 6
-        bounds = [tuple([np.log((np.min(y + 1))) / 2, -np.inf, -np.inf, t.min(), -np.inf, -np.inf]),
-                  tuple([np.log((np.max(y))) / 2, np.inf, np.inf, t.max(), np.inf, np.inf])]
+        bounds = [tuple([np.log((np.min(y + 1))) , -np.inf, -np.inf, t.min(), -np.inf, -np.inf]),
+                  tuple([np.log((np.max(y))) , np.inf, np.inf, t.max(), np.inf, np.inf])]
     elif marginal in ["NB", "ZINB"]:
         d = 7
-        bounds = [tuple([np.log(np.min(y + 1)) / 2, -np.inf, -np.inf, t.min() - 0.5, 1, 0, 0]),
-                  tuple([np.log(np.max(y)) / 2, np.inf, np.inf, t.max() + 0.5, 100, 100, 100])]
+        bounds = [tuple([np.log(np.min(y + 1)) , -np.inf, -np.inf, t.min() - 0.5, 1, 0, 0]),
+                  tuple([np.log(np.max(y)) , np.inf, np.inf, t.max() + 0.5, 100, 100, 100])]
     else:
         raise ValueError("Enter a valid marginal distribution: [NB, ZINB, Poisson, ZIP]!")
 
@@ -36,7 +36,7 @@ def estimation(y, t, marginal, iter=50):
 
     # Set-up hyperparameters and correct initial position
     options = {'c1': 1.2, 'c2': 0.3, 'w': 0.9}
-    b[:, 0] = np.log(np.mean(y + 1)) / 2
+    b[:, 0] = np.log(np.mean(y + 1))
     b[:, -1] = 0.1
     b[:, 1] += 5
     b[:, 2] += 5

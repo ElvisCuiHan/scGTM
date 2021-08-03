@@ -6,15 +6,15 @@ import matplotlib.pyplot as plt
 def link(t, mu, k1, k2, t0):
     """
 
-    :param t:
-    :param mu:
-    :param k1:
-    :param k2:
-    :param t0:
+    :param t: pseudotime
+    :param mu: peak expression
+    :param k1: activation strength or how quickly a gene is up regulated (increasing)
+    :param k2: activation strength or how quickly a gene is down regulated (decreasing)
+    :param t0: turning point
     :return:
     """
-    part1 = 2 * mu * np.exp(- np.abs(k1) * (t - t0) ** 2) * np.sign(k1)
-    part2 = 2 * mu * np.exp(- np.abs(k2) * k2 * (t - t0) ** 2) * np.sign(k2)
+    part1 = mu * np.exp(- np.abs(k1) * (t - t0) ** 2) * np.sign(k1)
+    part2 = mu * np.exp(- np.abs(k2) * k2 * (t - t0) ** 2) * np.sign(k2)
 
     return part1 * (t <= t0) + part2 * (t > t0)
 
@@ -140,8 +140,8 @@ def plot_result(para, t, color, marginal):
     plt.plot(np.sort(t), log_mut_fit, linewidth=3, c=color[0], label="Fitted curve (mean function)")
     if marginal in ["ZIP", "ZINB"]:
         plt.plot(np.sort(t), ZIlog_mut_fit - 0.1, linewidth=1.2, c=color[1], label="With dropout (minus -log(1-p))")
-    plt.xlabel("Pseudotime")
-    plt.ylabel("Expression log(FPKM+1)")
+    plt.xlabel("Pseudotime", fontsize=18)
+    plt.ylabel("Expression log(FPKM+1)", fontsize=18)
     if t0_fit <= 1 and t0_fit >= 0:
         plt.axvline(t0_fit, linewidth=4, color=color[2], linestyle="--",
                     ymin=0.02, ymax=0.96, label="Estimated t0 (turning point)")
