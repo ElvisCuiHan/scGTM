@@ -1,3 +1,7 @@
+![scKGAM Logo](https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/scKGAM.png)
+---
+
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg )](https://github.com/ElvisCuiHan/scKGAM/blob/main/LICENSE.md)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
@@ -53,7 +57,7 @@ Index Pseudotime Gene1 Gene2 ...
 
 ### All-in-one function
 
-Suppose we want to regress Gene 1 on pseudotime using the Bell-shape Curve Model, simply we call the `main` function:
+Suppose we want to regress Gene 1 on pseudotime using the scKGAM, simply we call the `main` function:
 
 ```python
  main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YouDataPath, save_dir=YouTargetPath, plot_args={})
