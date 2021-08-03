@@ -55,8 +55,8 @@ Index Pseudotime Gene1 Gene2 ...
 4.    t4         y41   y42   ...
 ```
 A typical data structure will be of the following form:
-<img src="https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/data.png" width="400" />
 
+<img src="https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/data.png" width="400" />
 
 ### All-in-one function
 
