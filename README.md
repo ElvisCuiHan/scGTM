@@ -8,7 +8,7 @@
 It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scKGAM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
 * **Free software:** MIT license
-* **Documentation:** https://test.pypi.org/project/scBCM/0.2/.
+* **Documentation:** https://test.pypi.org/project/scKGAM/0.5/.
 * **Python versions:** 3.5 and above
 
 ## Installation
@@ -16,7 +16,7 @@ It is intended for bioinformatic scientists, applied statisticians, and students
 To install scBCM, run this command in your terminal:
 
 ```shell
-$ pip install -i https://test.pypi.org/simple/ scKGAM==0.4
+$ pip install -i https://test.pypi.org/simple/ scKGAM==0.5
 ```
 
 This is the preferred method to install scKGAM. In case you want to install the bleeding-edge version, clone this repo:
@@ -38,6 +38,7 @@ scKGAM provides a high-level implementation of various marginal distributions in
 You can import scKGAMas any other Python module,
 
 ```python
+import scKGAM 
 import pyswarms as ps
 ```
 
