@@ -39,7 +39,7 @@ $ python setup.py install
 
 scKGAM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
 
-You can import scKGAMas any other Python module,
+You can import scKGAM as any other Python module,
 
 ```python
 import scKGAM 
