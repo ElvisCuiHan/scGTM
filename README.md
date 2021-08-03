@@ -17,7 +17,7 @@ It is intended for bioinformatic scientists, applied statisticians, and students
 
 ## Installation
 
-To install scBCM, run this command in your terminal:
+To install scKGAM, run this command in your terminal:
 
 ```shell
 $ pip install -i https://test.pypi.org/simple/ scKGAM==0.5
