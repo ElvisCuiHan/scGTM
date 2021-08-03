@@ -6,8 +6,8 @@ from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from scipy.stats import nbinom, poisson
-#from pseudotimeAPI import *
-#from pseudotimeEstInfer import *
+from .pseudotimeAPI import *
+from .pseudotimeEstInfer import *
 
 import warnings
 warnings.filterwarnings("ignore")
