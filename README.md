@@ -1,7 +1,7 @@
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg )](https://raw.githubusercontent.com/ljvmiranda921/pyswarms/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg )]
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-# scBCM: Single-cell Bell Shape Curve Model
+# scKGAM: Single-cell gene expression kinetics generalized additive model
 
 **scBCM** is the abbreviation for *Single-cell Bell Shape Curve Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
 
@@ -27,7 +27,7 @@ $ git clone -b development https://github.com/ElvisCuiHan/scBCM.git
 and then run
 
 ```shell
-$ cd scBCM
+$ cd scKGAM
 $ python setup.py install
 ```
 
