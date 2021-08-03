@@ -7,4 +7,5 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from .pseudotimeAPI import *
 from .pseudotimeEstInfer import *
+from .scKGAM import *
 from scipy.stats import nbinom, poisson
