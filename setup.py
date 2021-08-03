@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="scBCM",
-    version="0.3",
+    name="scKGAM",
+    version="0.4",
     author="Elvis Cui",
     author_email="elviscuihan@g.ucla.edu",
-    description="Bell-shape Curve Model.",
+    description="Single-cell Gene Expression Kinetics Generalized Additive Model.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/ElvisCuiHan/scBCM",
+    url="https://github.com/ElvisCuiHan/scKGAM",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
