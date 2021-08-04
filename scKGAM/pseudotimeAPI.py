@@ -189,4 +189,4 @@ def Fisher_info(t, para, marginal):
 
     cache = np.vstack([t0_deri, k1_deri, k2_deri, mu_deri])
 
-    return (cache.dot(cache.T)) / len(t)
+    return (cache.dot(cache.T)) #/ len(t)

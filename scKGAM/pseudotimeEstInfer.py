@@ -1,5 +1,5 @@
 import numpy as np
-from pseudotimeAPI import *
+from .pseudotimeAPI import *
 import pyswarms as ps
 
 def estimation(y, t, marginal, iter=50):
