@@ -7,14 +7,14 @@ def link(t, mu, k1, k2, t0):
     """
 
     :param t: pseudotime
-    :param mu: peak expression
+    :param mu: peak expression value
     :param k1: activation strength or how quickly a gene is up regulated (increasing)
     :param k2: activation strength or how quickly a gene is down regulated (decreasing)
     :param t0: turning point
     :return:
     """
     part1 = mu * np.exp(- np.abs(k1) * (t - t0) ** 2) * np.sign(k1)
-    part2 = mu * np.exp(- np.abs(k2) * k2 * (t - t0) ** 2) * np.sign(k2)
+    part2 = mu * np.exp(- np.abs(k2) * (t - t0) ** 2) * np.sign(k2)
 
     return part1 * (t <= t0) + part2 * (t > t0)
 
@@ -189,4 +189,4 @@ def Fisher_info(t, para, marginal):
 
     cache = np.vstack([t0_deri, k1_deri, k2_deri, mu_deri])
 
-    return (cache.dot(cache.T))
+    return (cache.dot(cache.T)) / len(t)

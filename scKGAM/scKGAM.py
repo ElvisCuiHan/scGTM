@@ -127,7 +127,8 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         result['k1_lower'] = k1_lower; result['k1_upper'] = k1_upper
         result['k2_lower'] = k2_lower; result['k2_upper'] = k2_upper
         result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper
-        result['Fisher'] = 'Non-singular'
+        result['Fisher'] = fisher
+        result['Covariance'] = var
     else:
         var = fisher
         var[0, 0] = 1 / (var[0, 0] + 1e-100)
@@ -147,7 +148,8 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         result['k1_lower'] = k1_lower; result['k1_upper'] = k1_upper
         result['k2_lower'] = k2_lower; result['k2_upper'] = k2_upper
         result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper
-        result['Fisher'] = 'Singular'
+        result['Fisher'] = fisher
+        result['Covariance'] = var
 
     ## SAVE ESTIMATION RESULTS
     with open(save_dir + str(gene_index) + marginal + '.json', 'w') as fp:
