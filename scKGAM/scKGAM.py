@@ -124,9 +124,9 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
             " k1 : (" + str(k1_lower) + ", " + str(k1_upper) + ")\n",
             "k2 : (" + str(k2_lower) + ", " + str(k2_upper) + ")\n"
              )
-        result['k1_lower'] = k1_lower; result['k1_upper'] = k1_upper
-        result['k2_lower'] = k2_lower; result['k2_upper'] = k2_upper
-        result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper
+        result['k1_lower'] = k1_lower; result['k1_upper'] = k1_upper; result['k1_std'] = np.sqrt(var[1, 1])
+        result['k2_lower'] = k2_lower; result['k2_upper'] = k2_upper; result['k2_std'] = np.sqrt(var[2, 2])
+        result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper; result['mu_std'] = np.sqrt(var[3, 3])
         result['Fisher'] = 'Non-singular'
     else:
         var = fisher
@@ -134,6 +134,7 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         var[1, 1] = 1 / (var[1, 1] + 1e-100)
         var[2, 2] = 1 / (var[2, 2] + 1e-100)
         var[3, 3] = 1 / (var[3, 3] + 1e-100)
+        result['t0_std'] = np.sqrt(var[0, 0])
         k1_lower = np.round(gbest[1] - 1.96 * np.sqrt(var[1, 1]), 3)
         k1_upper = np.round(gbest[1] + 1.96 * np.sqrt(var[1, 1]), 3)
         k2_lower = np.round(gbest[2] - 1.96 * np.sqrt(var[2, 2]), 3)
@@ -144,9 +145,9 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
             " k1 : (" + str(k1_lower) + ", " + str(k1_upper) + ")\n",
             "k2 : (" + str(k2_lower) + ", " + str(k2_upper) + ")\n"
              )
-        result['k1_lower'] = k1_lower; result['k1_upper'] = k1_upper
-        result['k2_lower'] = k2_lower; result['k2_upper'] = k2_upper
-        result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper
+        result['k1_lower'] = k1_lower; result['k1_upper'] = k1_upper; result['k1_std'] = np.sqrt(var[1, 1])
+        result['k2_lower'] = k2_lower; result['k2_upper'] = k2_upper; result['k2_std'] = np.sqrt(var[2, 2])
+        result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper; result['mu_std'] = np.sqrt(var[3, 3])
         result['Fisher'] = 'Singular'
 
     ## SAVE ESTIMATION RESULTS
