@@ -12,15 +12,15 @@
 It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scKGAM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
 * **Free software:** MIT license
-* **Documentation:** https://test.pypi.org/project/scKGAM/0.92/.
-* **Python versions:** 3.5 and above
+* **Documentation:** https://test.pypi.org/project/scKGAM/1.0/.
+* **Python versions:** 3.6 and above
 
 ## Installation
 
 To install scKGAM, run this command in your terminal:
 
 ```shell
-$ pip install -i https://test.pypi.org/simple/ scKGAM==0.92
+$ pip install -i https://test.pypi.org/simple/ scKGAM==1.0
 ```
 
 This is the preferred method to install scKGAM. In case you want to install the bleeding-edge version, clone this repo:
@@ -63,7 +63,7 @@ A typical data structure will be of the following form:
 Suppose we want to regress Gene 1 on pseudotime using the scKGAM, simply we call the `main` function:
 
 ```python
- main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YouDataPath, save_dir=YouTargetPath, plot_args={})
+ main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YourDataPath, save_dir=YouTargetPath, plot_args={})
 ```
 
 - `gene_index`: The index of gene that we want to model.
@@ -77,6 +77,12 @@ plot_args={
              'color': ['red', 'tomato', 'orange', 'violet'],
              'cmap': 'Blues',
          }
+```
+
+If you want to estimate many genes with different marginals, you can first change the data directory in the function `parallel` and then use the following command in terminal:
+
+```bash
+python run_scKGAM.py  --gene.start {START INDEX} --gene.end {END INDEX} --model.marginal "NB" --model.save_dir "YourTargetPath" --model.iter 150
 ```
 
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
