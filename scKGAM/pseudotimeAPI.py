@@ -13,8 +13,8 @@ def link(t, mu, k1, k2, t0):
     :param t0: turning point
     :return:
     """
-    part1 = mu * np.exp(- np.abs(k1) * (t - t0) ** 2) * np.sign(k1)
-    part2 = mu * np.exp(- np.abs(k2) * (t - t0) ** 2) * np.sign(k2)
+    part1 = mu * np.exp(- np.abs(k1) * (t - t0) ** 2) * (np.sign(k1) + (k1 == 0))
+    part2 = mu * np.exp(- np.abs(k2) * (t - t0) ** 2) * (np.sign(k2) + (k2 == 0))
 
     return part1 * (t <= t0) + part2 * (t > t0)
 
@@ -22,12 +22,12 @@ def link(t, mu, k1, k2, t0):
 def single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0):
     """
 
-    :param y:
-    :param t:
-    :param mu:
-    :param k1:
-    :param k2:
-    :param t0:
+    :param y: observation
+    :param t: pseudotime
+    :param mu: peak expression value
+    :param k1: activation strength or how quickly a gene is up regulated (increasing)
+    :param k2: activation strength or how quickly a gene is down regulated (decreasing)
+    :param t0: turning point
     :return:
     """
     bell = link(t, mu, k1, k2, t0)
@@ -91,7 +91,7 @@ def single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta):
     :return:
     """
     bell = link(t, mu, k1, k2, t0)
-    mut = np.maximum(np.exp(bell) , 0.01)
+    mut = np.maximum(np.exp(bell) , 0.1)
     phi = np.maximum(np.floor(phi), 1)
     p0 = phi / (mut + phi)
     cache = nbinom.pmf(y, phi, p0) + 1e-300
@@ -129,9 +129,12 @@ def pso_obj_fct(b, **kwargs):
     return cost
 
 ## Plot the results
-def plot_result(para, t, color, marginal):
+def plot_result(para, t, color, marginal, flag, y1):
     mu_fit, k1_fit, k2_fit, t0_fit = para[:4]
     log_mut_fit = link(np.sort(t), mu_fit, k1_fit, k2_fit, t0_fit)
+
+    if flag:
+        log_mut_fit = - log_mut_fit + np.log(np.max(y1) + 1)
 
     p_fit = 1 / (1 + np.exp(para[-1] + para[-2] * np.exp(log_mut_fit)))
 

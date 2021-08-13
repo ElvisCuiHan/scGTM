@@ -5,31 +5,43 @@ import pyswarms as ps
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
-from scipy.stats import nbinom, poisson
-from .pseudotimeAPI import *
-from .pseudotimeEstInfer import *
+from scipy.stats import nbinom, poisson, norm
+from pseudotimeAPI import *
+from pseudotimeEstInfer import *
 
 import warnings
 warnings.filterwarnings("ignore")
 
-def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None, plot_args=None):
+def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter_num=50, data_dir=None, save_dir=None, plot_args=None):
 
-    print("Loading data......")
+    #print("Loading data......")
 
     ## LOAD DATA
-    data = pd.read_csv(data_dir)
-    print("Loading finished!")
+    #data = pd.read_csv(data_dir)
+    #print("Loading finished!")
 
     ## TAKE NEEDED DATA
-    t = data.iloc[:, 1]
-    y1 = np.floor(data.iloc[:, gene_index])
-    gene_name = data.columns[gene_index]
+    #t = data.iloc[:, 1]
+    #y1 = np.floor(data.iloc[:, gene_index])
+    #gene_name = data.columns[gene_index]
+
+    ## Flag calculation
+    flag = (np.corrcoef(t[t<0.5], y1[t<0.5])[0, 1]) < 0 and (np.corrcoef(t[t>0.5], y1[t>0.5])[0, 1]) > 0
+    print("The need of transformation: " + str(flag))
+    
+    if flag:
+        raw = np.copy(y1)
+        y1 = np.log(y1 + 1)
+        y1 = -y1 + np.max(y1)
+        y1 = np.floor(np.exp(y1)-1)
+    else:
+        pass
 
     ## ESTIMATION
     print("\nWe are estimating gene %d with marginal %s." % (gene_index, marginal))
 
     result = {}
-    gcost, gbest = estimation(y1, t, marginal, iter)
+    gcost, gbest = estimation(y1, t, marginal, iter_num)
     result['negative_log_likelihood'] = gcost
 
     if gcost > 1e2:
@@ -87,13 +99,16 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         cmap = 'PRGn'
 
     fig, ax = plt.subplots(figsize=(10, 8))
+    if flag:
+        y1 = raw
     log_data = np.log(y1 + 1)
     plt.scatter(t, log_data, s=10, c=log_data, cmap=plt.get_cmap(cmap))
     plt.ylim(np.min(log_data) - 1, np.max(log_data) + 1)
 
-    plot_result(gbest, t, color, marginal=marginal)
+    plot_result(gbest, t, color, marginal=marginal, flag=flag, y1=y1)
 
-    plt.title("Marginal: " + marginal + ". Gene: " + str(gene_name) + '.', fontsize=15)
+    plt.title("Marginal: " + marginal + ". Gene: " + str(gene_name) + '.' + " Transform: " + str((flag)) + '.',
+              fontsize=15)
     #plt.show()
 
     plt.savefig(save_dir + str(gene_index) + marginal + ".png")
@@ -114,6 +129,7 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         result['k2_upper'] = result['mu_lower'] = result['mu_upper'] =  "Nah"
 
     if np.ndim(var) > 1:
+        result['t0_std'] = np.sqrt(var[0, 0])
         k1_lower = np.round(gbest[1] - 1.96 * np.sqrt(var[1, 1]), 3)
         k1_upper = np.round(gbest[1] + 1.96 * np.sqrt(var[1, 1]), 3)
         k2_lower = np.round(gbest[2] - 1.96 * np.sqrt(var[2, 2]), 3)
@@ -150,9 +166,28 @@ def main(gene_index = 100, marginal="ZIP", iter=50, data_dir=None, save_dir=None
         result['mu_lower'] = mu_lower; result['mu_upper'] = mu_upper; result['mu_std'] = np.sqrt(var[3, 3])
         result['Fisher'] = 'Singular'
 
+    result['Transform'] = int(flag)
     ## SAVE ESTIMATION RESULTS
     with open(save_dir + str(gene_index) + marginal + '.json', 'w') as fp:
         json.dump(result, fp)
 
     return result
 
+def parallel(args):
+    print("Loading data......")
+    data = pd.read_csv("YourDataPath")
+    print("Loading finished!")
+
+    for i in range(args['gene.start'], args['gene.end']):
+        main(gene_index=i,
+             t=data.iloc[:, 1],
+             y1 = np.floor(data.iloc[:, i]),
+             gene_name = data.columns[i],
+             marginal=args['model.marginal'],
+             iter_num=args['model.iter'],
+             save_dir=args['model.save_dir'],
+             plot_args={
+                'color': ['red', 'tomato', 'orange', 'violet'],
+                'cmap': 'Blues',
+             })
+    return

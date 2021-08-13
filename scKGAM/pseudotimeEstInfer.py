@@ -1,33 +1,18 @@
 import numpy as np
-from .pseudotimeAPI import *
+from pseudotimeAPI import *
 import pyswarms as ps
 
 def estimation(y, t, marginal, iter=50):
-    """
-    This function estimates the parameters in the model.
-    Examlpe: If the marginal is zero-inflated Poisson, then the parameters are
-            mu, k1, k2, t0 and p. If the marginal if zero-inflated Negative binomial,
-            then the parameters are mu, k1, k2, t0, phi and p.
-    :param y: a vector of gene expression value.
-    :param t: pseudotime time, usually within range 0 to 1.
-    :param marginal: the marginal distribution of the model, should be one of "ZIP" and "ZINB".
-    :return:
-        mu: Average peak expression value.
-        k1: Activation strength of the first process (part).
-        k2: Activation strength of the second process (part).
-        t0: Activation / inverted time. At this point, the gene expression achieves its peak and then it goes down.
-        phi: Dispersion parameter of the negative binomial marginal.
-        p: Zero proportion of the model.
-    """
+
     n = 30
     if marginal in ["Poisson", "ZIP"]:
         d = 6
-        bounds = [tuple([np.log((np.min(y + 1))) , -np.inf, -np.inf, t.min(), -np.inf, -np.inf]),
-                  tuple([np.log((np.max(y))) , np.inf, np.inf, t.max(), np.inf, np.inf])]
+        bounds = [np.array([np.log((np.min(y + 1))) , -np.inf, -np.inf, t.min(), -np.inf, -np.inf]),
+                  np.array([np.log((np.max(y))) , np.inf, np.inf, t.max(), np.inf, np.inf])]
     elif marginal in ["NB", "ZINB"]:
         d = 7
-        bounds = [tuple([np.log(np.min(y + 1)) , -np.inf, -np.inf, t.min() - 0.5, 1, 0, 0]),
-                  tuple([np.log(np.max(y)) , np.inf, np.inf, t.max() + 0.5, 100, 100, 100])]
+        bounds = [np.array([np.log(np.min(y) + 1) , -np.inf, -np.inf, t.min() - 0.5, 1, 0, 0]),
+                  np.array([np.log(np.max(y) + 1) , np.inf, np.inf, t.max() + 0.5, 100, 100, 100])]
     else:
         raise ValueError("Enter a valid marginal distribution: [NB, ZINB, Poisson, ZIP]!")
 
@@ -36,11 +21,10 @@ def estimation(y, t, marginal, iter=50):
 
     # Set-up hyperparameters and correct initial position
     options = {'c1': 1.2, 'c2': 0.3, 'w': 0.9}
-    b[:, 0] = np.log(np.mean(y + 1))
+    b[:, 0] = np.log(np.mean(y) + 1)
     b[:, -1] = 0.1
     b[:, 1] += 5
     b[:, 2] += 5
-    #b[:, 3] = 0.9
     if d == 7:
         b[:, -3] += 1
 
