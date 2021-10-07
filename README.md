@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg )](https://github.com/ElvisCuiHan/scKGAM/blob/main/LICENSE.md)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-# scKGAM: Single-cell gene expression kinetics generalized additive model
+# scGKM: Single-cell generalized kinetics model
 
 **scKGAM** is the abbreviation for *Single-cell Gene Expression Kinetics Generalized Additive Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
 
