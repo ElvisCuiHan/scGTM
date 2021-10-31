@@ -1,4 +1,4 @@
-![scKGAM Logo](https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/scKGAM.png?width="400")
+![scKGAM Logo](https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/scGTM.png?width="400")
 ---
 
 
