@@ -1,13 +1,13 @@
-![scKGAM Logo](https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/scGTM.png?width="400")
+![scGTM Logo](https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/scGTM.png?width="400")
 ---
 
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg )](https://github.com/ElvisCuiHan/scKGAM/blob/main/LICENSE.md)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-# scGKM: Single-cell generalized kinetics model
+# scGTM: Single-cell generalized trend model
 
-**scGKM** (orignally named as scKGAM) is the abbreviation for *Single-cell Gene Expression Generalized Kinetics Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
+**scGTM** (orignally named as scKGAM) is the abbreviation for *Single-cell Gene Expression Generalized Trend Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
 
 It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scGKM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
@@ -17,7 +17,7 @@ It is intended for bioinformatic scientists, applied statisticians, and students
 
 ## Installation
 
-To install scKGAM, run this command in your terminal:
+To install scGTM, run this command in your terminal:
 
 ```shell
 $ pip install -i https://test.pypi.org/simple/ scKGAM==1.0
