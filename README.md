@@ -12,7 +12,6 @@
 It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scGKM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
 * **Free software:** MIT license
-* **Documentation:** https://test.pypi.org/project/scKGAM/1.0/.
 * **Python versions:** 3.6 and above
 
 ## Installation
