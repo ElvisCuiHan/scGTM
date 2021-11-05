@@ -17,34 +17,21 @@ It is intended for bioinformatic scientists, applied statisticians, and students
 
 ## Installation
 
-To install scGTM, run this command in your terminal:
+To install the bleeding-edge version of scGTM, clone this repo:
 
 ```shell
-$ pip install -i https://test.pypi.org/simple/ scKGAM==1.0
-```
-
-This is the preferred method to install scKGAM. In case you want to install the bleeding-edge version, clone this repo:
-
-```shell
-$ git clone -b development https://github.com/ElvisCuiHan/scKGAM.git
+$ git clone -b git@github.com:ElvisCuiHan/scGTM.git
 ```
 and then run
 
 ```shell
-$ cd scKGAM
-$ python setup.py install
+$ cd scGTM
+$ python run_scGTM.py --model.iter 100 --model.marginal 'ZIP' --model.save_dir "your/path/to/save" --data.dir "your/path/file.csv" --gene.start 3 --gene.end 4
 ```
 
 ## Usage
 
-scKGAM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
-
-You can import scKGAM as any other Python module,
-
-```python
-import scKGAM 
-import pyswarms as ps
-```
+scGTM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
 
 The data should be a cell-by-gene matrix where the first column corresponding to the pseudotime:
 ```math
@@ -60,17 +47,22 @@ A typical data structure will be of the following form:
 
 ### All-in-one function
 
-Suppose we want to regress Gene 1 on pseudotime using the scKGAM, simply we call the `main` function:
+Suppose we want to regress Gene 1 on pseudotime using the scKGAM, simply we run the `run_scGTM` file in shell:
 
-```python
- main(gene_index = 1, marginal="ZIP", iter=50, data_dir=YourDataPath, save_dir=YouTargetPath, plot_args={})
+```shell
+python run_scGTM.py --model.iter {# of iterations} --model.marginal 'ZIP' --model.save_dir "your/path/to/save" --data.dir "your/path/file.csv" --gene.start {START INDEX} --{END INDEX} 
 ```
 
 - `gene_index`: The index of gene that we want to model.
-- `marginal`: The marginal distribution of the gene expression, should be one of `["NB", "ZINB", "Poisson", "ZIP"]`.
-- `iter`: Number of iterations run by PSO, usually 150 suffices.
-- `data_dir`: The path to our data file.
-- `save_dir`: The directory to save our results.
+- `model.marginal`: The marginal distribution of the gene expression, should be one of `["NB", "ZINB", "Poisson", "ZIP"]`.
+- `model.iter`: Number of iterations run by PSO, usually 150 suffices.
+- `model.save_dir`: The directory to save our results.
+- `data.dir`: The path to our data file.
+- `gene.start`: Index of the first gene to fit.
+- `gene.end`: Index of the last gene to fit.
+
+In the `scGTM.py` file, we can modify the arguments to let the model outputs user-defined colors.
+
 - `plot_args`: A dictionary with keys *color* and *cmap*. *color* is a 4x1 vector and *cmap* is a string. For example:
 ```python
 plot_args={
@@ -89,7 +81,7 @@ Note the data should be in *.csv* format. The **main** function will return a *.
 
 ### Example
 
-The following figure has shown a typical output by the `main` function in `scKGAM.py`.
+The following figure has shown a typical output by the `main` function in `scGTM.py`.
 
 - *Red line*: fitted log mean expression (log(tau_c) in the paper). 
 - *Blue line*: Red line minus -log(1-p_c) so that the zero-inflation part is removed from expectation.
