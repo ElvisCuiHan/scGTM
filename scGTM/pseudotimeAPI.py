@@ -143,12 +143,14 @@ def plot_result(para, t, color, marginal, flag, y1):
     plt.plot(np.sort(t), log_mut_fit, linewidth=3, c=color[0], label="Fitted curve (mean function)")
     if marginal in ["ZIP", "ZINB"]:
         plt.plot(np.sort(t), ZIlog_mut_fit - 0.1, linewidth=1.2, c=color[1], label="With dropout (minus -log(1-p))")
-    plt.xlabel("Pseudotime", fontsize=18)
-    plt.ylabel("Expression log(FPKM+1)", fontsize=18)
+    plt.xlabel("Pseudotime", fontsize=20)
+    plt.ylabel("Expression log(count+1)", fontsize=20)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
     if t0_fit <= 1 and t0_fit >= 0:
         plt.axvline(t0_fit, linewidth=4, color=color[2], linestyle="--",
                     ymin=0.02, ymax=0.96, label="Estimated t0 (turning point)")
-    plt.legend()
+    #plt.legend()
 
     if marginal in ["ZIP", "ZINB"]:
         plt.twinx()
