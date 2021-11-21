@@ -73,7 +73,7 @@ plot_args={
 If you want to estimate many genes with different marginals, you can first change the data directory in the function `parallel` and then use the following command in terminal:
 
 ```bash
-python run_scKGAM.py  --gene.start {START INDEX} --gene.end {END INDEX} --model.marginal "NB" --model.save_dir "YourTargetPath" --model.iter 150
+python run_scGTM.py  --gene.start {START INDEX} --gene.end {END INDEX} --model.marginal "NB" --model.save_dir "YourTargetPath" --model.iter 150
 ```
 
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
