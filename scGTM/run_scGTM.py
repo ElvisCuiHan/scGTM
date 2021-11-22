@@ -1,4 +1,4 @@
-from scKGAM import *
+from scGTM import *
 
 import argparse
 
