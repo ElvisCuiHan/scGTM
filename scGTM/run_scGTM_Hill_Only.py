@@ -1,4 +1,4 @@
-from scGTM_Bell_Only import *
+from scGTM_Hill_Only import *
 
 import argparse
 
