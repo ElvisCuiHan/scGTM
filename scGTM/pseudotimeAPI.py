@@ -13,13 +13,13 @@ def link(t, mu, k1, k2, t0):
     :param t0: turning point
     :return:
     """
-    part1 = mu * np.exp(- np.abs(k1) * (t - t0) ** 2)
-    part2 = mu * np.exp(- np.abs(k2) * (t - t0) ** 2)
+    part1 = mu * np.exp(- np.abs(k1) * (t - t0) ** 2) * (np.sign(k1) + (k1 == 0))
+    part2 = mu * np.exp(- np.abs(k2) * (t - t0) ** 2) * (np.sign(k2) + (k2 == 0))
 
     return part1 * (t <= t0) + part2 * (t > t0)
 
 ## Poisson
-def single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0, x=0, flag=False):
+def single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0):
     """
 
     :param y: observation
@@ -31,15 +31,11 @@ def single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0, x=0, flag=False):
     :return:
     """
     bell = link(t, mu, k1, k2, t0)
-    if flag:
-        bell = - bell + x
-    else:
-        bell -= 0.01*x
     mut = np.maximum(np.exp(bell) , 0.1)
     return -np.log(poisson.pmf(y, mut) + 1e-300).sum()
 
 ## Zero-inflated Poisson
-def single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta, x=0, flag=False):
+def single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta):
     """
 
     :param y:
@@ -52,10 +48,6 @@ def single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta, x=0, flag=
     :return:
     """
     bell = link(t, mu, k1, k2, t0)
-    if flag:
-        bell = - bell + x
-    else:
-        bell -= 0.01*x
     mut = np.maximum(np.exp(bell), 0.1)
     cache = poisson.pmf(y, mut) + 1e-300
 
@@ -65,7 +57,7 @@ def single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta, x=0, flag=
     return - np.log(cache * (1 - p) + p * (y == 0)).sum()
 
 ## Negative Binomial
-def single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi, x=0, flag=False):
+def single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi):
     """
 
     :param y:
@@ -78,10 +70,6 @@ def single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi, x=0, flag=False):
     :return:
     """
     bell = link(t, mu, k1, k2, t0)
-    if flag:
-        bell = - bell + x
-    else:
-        bell -= 0.01*x
     mut = np.maximum(np.exp(bell) , 0.1)
     phi = np.maximum(np.floor(phi), 1)
     p0 = mut / (mut + phi)
@@ -89,7 +77,7 @@ def single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi, x=0, flag=False):
     return -np.log(cache).sum()
 
 ## Zero-inflated Negative Binomial
-def single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta, x=0, flag=False):
+def single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta):
     """
 
     :param y:
@@ -103,10 +91,6 @@ def single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta, x=0,
     :return:
     """
     bell = link(t, mu, k1, k2, t0)
-    if flag:
-        bell = - bell + x
-    else:
-        bell -= 0.01*x
     mut = np.maximum(np.exp(bell) , 0.1)
     phi = np.maximum(np.floor(phi), 1)
     p0 = phi / (mut + phi)
@@ -131,56 +115,26 @@ def pso_obj_fct(b, **kwargs):
     cost = np.zeros(N)
     for i in range(N):
         if marginal == "ZINB":
-            mu, k1, k2, t0, phi, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta, x, flag=False)
+            mu, k1, k2, t0, phi, alpha, beta = b[i, :]
+            cost[i] = single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta)
         elif marginal == "NB":
-            mu, k1, k2, t0, phi, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi, x, flag=False)
+            mu, k1, k2, t0, phi, alpha, beta = b[i, :]
+            cost[i] = single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi)
         elif marginal == "ZIP":
-            mu, k1, k2, t0, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta, x, flag=False)
+            mu, k1, k2, t0, alpha, beta = b[i, :]
+            cost[i] = single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta)
         else:
-            mu, k1, k2, t0, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0, x, flag=True)
-    return cost
-
-def pso_obj_fct_valley(b, **kwargs):
-    """
-
-    :param b: an Nxd particle matrix where N is the number of particles,
-              and d is the dimension of each particle.
-    :param kwargs:
-    :return:
-    """
-    N, d = b.shape
-    y, t, marginal = kwargs.values()
-
-    cost = np.zeros(N)
-    for i in range(N):
-        if marginal == "ZINB":
-            mu, k1, k2, t0, phi, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta, x, flag=True)
-        elif marginal == "NB":
-            mu, k1, k2, t0, phi, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi, x, flag=True)
-        elif marginal == "ZIP":
-            mu, k1, k2, t0, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_ZIP(y, t, mu, k1, k2, t0, alpha, beta, x, flag=True)
-        else:
-            mu, k1, k2, t0, alpha, beta, x = b[i, :]
-            cost[i] = single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0, x, flag=True)
+            mu, k1, k2, t0, alpha, beta = b[i, :]
+            cost[i] = single_gene_log_likelihood_Poisson(y, t, mu, k1, k2, t0)
     return cost
 
 ## Plot the results
 def plot_result(para, t, color, marginal, flag, y1):
     mu_fit, k1_fit, k2_fit, t0_fit = para[:4]
-    x_fit = para[-1]
     log_mut_fit = link(np.sort(t), mu_fit, k1_fit, k2_fit, t0_fit)
 
     if flag:
-        log_mut_fit = - log_mut_fit + x_fit
-    else:
-        log_mut_fit -= x_fit
+        log_mut_fit = - log_mut_fit + np.log(np.max(y1) + 1)
 
     p_fit = 1 / (1 + np.exp(para[-1] + para[-2] * np.exp(log_mut_fit)))
 
@@ -214,9 +168,9 @@ def Fisher_info(t, para, marginal):
     :return: a 4x4 Fisher information matrix.
     """
     if marginal == "ZIP" or marginal == "Poisson":
-        mu_fit, k1_fit, k2_fit, t0_fit, alpha_fit, beta_fit, x_fit = para
+        mu_fit, k1_fit, k2_fit, t0_fit, alpha_fit, beta_fit = para
     else:
-        mu_fit, k1_fit, k2_fit, t0_fit, phi_fit, alpha_fit, beta_fit, x_fit = para
+        mu_fit, k1_fit, k2_fit, t0_fit, phi_fit, alpha_fit, beta_fit = para
     log_mut_fit = link(t, mu_fit, k1_fit, k2_fit, t0_fit)
 
     mut = np.maximum(np.exp(log_mut_fit), 0.1)
