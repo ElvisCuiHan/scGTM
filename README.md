@@ -46,7 +46,7 @@ A typical data structure will be of the following form:
 
 ### All-in-one function
 
-Suppose we want to regress Gene 1 on pseudotime using the scKGAM, simply we run the `run_scGTM` file in shell:
+Suppose we want to regress Gene 1 on pseudotime using the scGTM, simply we run the `run_scGTM` file in shell:
 
 ```shell
 python run_scGTM.py --model.iter {# of iterations} --model.marginal 'ZIP' --model.save_dir "your/path/to/save" --data.dir "your/path/file.csv" --gene.start {START INDEX} --{END INDEX} 
