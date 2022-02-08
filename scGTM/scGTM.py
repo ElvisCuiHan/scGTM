@@ -187,7 +187,7 @@ def parallel(args):
     data = pd.read_csv(args['data.dir'])
     print("Loading finished!")
 
-    for i in range(args['gene.start'], args['gene.end']):
+    for i in range(args['gene.start'] + 1, args['gene.end'] + 1):
         main(gene_index=i,
              t=data.iloc[:, 1],
              y1 = np.floor(data.iloc[:, i]),
