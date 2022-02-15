@@ -4,9 +4,9 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Sing-cell Kinetics Generalized Additive Model')
 
-parser.add_argument('--gene.start', type=int, default=2, metavar='GENESTART',
+parser.add_argument('--gene.start', type=int, default=1, metavar='GENESTART',
                     help="index of gene to start (default: {:d})".format(2))
-parser.add_argument('--gene.end', type=int, default=3, metavar='GENEEND',
+parser.add_argument('--gene.end', type=int, default=100000000000, metavar='GENEEND',
                     help="index of gene to end (default: {:d})".format(3))
 parser.add_argument('--model.iter', type=int, default=100, metavar='ITERNUM',
                     help="Number of iteration in PSO (default: 100)")

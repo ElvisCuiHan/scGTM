@@ -53,7 +53,7 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         result['mu'] = gbest[0]; result['k1'] = gbest[1]
         result['k2'] = gbest[2]; result['t0'] = gbest[3]; result['phi'] = "Nah"
         result['alpha'] = gbest[4]; result['beta'] = gbest[5]
-
+        result['AIC'] = 2*gcost + 2*5
 
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , p:\n",
@@ -62,7 +62,8 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         gbest[4] = np.maximum(np.floor(gbest[-2]), 1)
         result['mu'] = gbest[0]; result['k1'] = gbest[1]; result['k2'] = gbest[2]
         result['t0'] = gbest[3]; result['phi'] = gbest[4]; result['alpha'] = gbest[5]; result['beta'] = gbest[6]
-
+        result['AIC'] = 2*gcost + 2*6
+        
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , phi , p:\n",
               np.round(gbest, 2), "\n")
@@ -73,7 +74,8 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         result['t0'] = gbest[3]
         result['phi'] = "Nah"
         result['p'] = "Nah"
-
+        result['AIC'] = 2*gcost + 2*4
+        
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0:\n",
               np.round(gbest[:-1], 2), "\n")
@@ -85,7 +87,8 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         result['t0'] = gbest[3]
         result['phi'] = gbest[4]
         result['p'] = "Nah"
-
+        result['AIC'] = 2*gcost + 2*5
+        
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , phi:\n",
               np.round(gbest[:-1], 2), "\n")
@@ -109,7 +112,7 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
               fontsize=15)
     #plt.show()
 
-    plt.savefig(save_dir + str(gene_index) + marginal + ".png")
+    plt.savefig(save_dir + str(gene_index-1) + marginal + ".png")
 
     ## FISHER INFORMATION
     fisher, var, t0_lower, t0_upper = inference(t, gbest, marginal)
@@ -166,21 +169,28 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
 
     result['Transform'] = int(flag)
     ## SAVE ESTIMATION RESULTS
-    with open(save_dir + str(gene_index) + marginal + '.json', 'w') as fp:
+    ### Calculate new negative log-likelihood value
+    mu_fit, k1_fit, k2_fit, t0_fit = gbest[:4]
+    log_mut_fit = link((t), mu_fit, k1_fit, k2_fit, t0_fit)
+    with open(save_dir + str(gene_index - 1) + marginal + '.json', 'w') as fp:
         json.dump(result, fp)
         #w = csv.DictWriter(fp, result.keys())
         #w.writeheader()
         #w.writerow(result)
 
-    return result
+    return {"result": result, "fitted_values": log_mut_fit}
 
 def parallel(args):
     print("Loading data......")
     data = pd.read_csv(args['data.dir'])
     print("Loading finished!")
 
-    for i in range(args['gene.start'], args['gene.end']):
-        main(gene_index=i,
+    fitted_values = np.zeros((len(data.iloc[:, 1]), args['gene.end'] - args['gene.start']))
+    fitted_values = pd.DataFrame(fitted_values)
+    count = 0
+
+    for i in range(args['gene.start']+1, args['gene.end']+1):
+        output = main(gene_index=i,
              t=data.iloc[:, 1],
              y1 = np.floor(data.iloc[:, i]),
              gene_name = data.columns[i],
@@ -191,4 +201,10 @@ def parallel(args):
                 'color': ['dodgerblue', 'skyblue', 'blue', 'violet'],
                 'cmap': 'autumn',
              })
+        fitted_values.iloc[:, count] = output['fitted_values']
+        count += 1
+    
+    fitted_values.columns = data.columns[args['gene.start']+1: args['gene.end']+1]
+    fitted_values.to_csv(args['model.save_dir'] + "fitted_mat.csv", index=False)
+
     return

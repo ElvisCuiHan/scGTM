@@ -71,7 +71,7 @@ def single_gene_log_likelihood_NB(y, t, mu, k1, k2, t0, phi):
     """
     bell = link(t, mu, k1, k2, t0)
     mut = np.maximum(np.exp(bell) , 0.1)
-    phi = np.maximum(np.floor(phi), 1)
+    phi = np.maximum((phi), 1)
     p0 = mut / (mut + phi)
     cache = nbinom.pmf(y, phi, 1 - p0) + 1e-300
     return -np.log(cache).sum()
@@ -92,7 +92,7 @@ def single_gene_log_likelihood_ZINB(y, t, mu, k1, k2, t0, phi, alpha, beta):
     """
     bell = link(t, mu, k1, k2, t0)
     mut = np.maximum(np.exp(bell) , 0.1)
-    phi = np.maximum(np.floor(phi), 1)
+    phi = np.maximum((phi), 1)
     p0 = phi / (mut + phi)
     cache = nbinom.pmf(y, phi, p0) + 1e-300
 
