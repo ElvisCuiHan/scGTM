@@ -61,7 +61,7 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
               "mu , k1 , k2 , t0 , p:\n",
               np.round(gbest, 2), "\n")
     elif marginal == "ZINB":
-        gbest[4] = np.maximum(np.floor(gbest[-2]), 1)
+        gbest[4] = np.maximum((gbest[-2]), 1)
         result['mu'] = gbest[0]; result['k1'] = gbest[1]; result['k2'] = gbest[2]
         result['t0'] = gbest[3]; result['phi'] = gbest[4]; result['alpha'] = gbest[5]; result['beta'] = gbest[6]
 
@@ -80,7 +80,7 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
               "mu , k1 , k2 , t0:\n",
               np.round(gbest[:-1], 2), "\n")
     else:
-        gbest[-2] = np.maximum(np.floor(gbest[-2]), 1)
+        gbest[-2] = np.maximum((gbest[-2]), 1)
         result['mu'] = gbest[0]
         result['k1'] = gbest[1]
         result['k2'] = gbest[2]
@@ -117,7 +117,7 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
     plt.text(result['t0']+0.03, -0.75, r"$t_0$", fontsize=24, color=color[2])
     #plt.show()
 
-    plt.savefig(save_dir + str(gene_index) + marginal + ".png")
+    plt.savefig(save_dir + str(gene_index-1) + marginal + ".png")
 
     ## FISHER INFORMATION
     fisher, var, t0_lower, t0_upper = inference(t, gbest, marginal)
@@ -174,7 +174,7 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
 
     result['Transform'] = int(flag)
     ## SAVE ESTIMATION RESULTS
-    with open(save_dir + str(gene_index) + marginal + '.json', 'w') as fp:
+    with open(save_dir + str(gene_index - 1) + marginal + '.json', 'w') as fp:
         json.dump(result, fp)
         #w = csv.DictWriter(fp, result.keys())
         #w.writeheader()
