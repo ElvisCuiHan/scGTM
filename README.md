@@ -49,7 +49,15 @@ A typical data structure will be of the following form:
 Suppose we want to regress Gene 1 on pseudotime using the scGTM, simply we run the `run_scGTM` file in shell:
 
 ```shell
-python run_scGTM.py --model.iter {# of iterations} --model.marginal 'ZIP' --model.save_dir "your/path/to/save" --data.dir "your/path/file.csv" --gene.start {START INDEX} --{END INDEX} 
+python run_scGTM.py --model.iter {# of iterations} --model.marginal 'ZIP' --model.save_dir "your/path/to/save" --data.dir "your/path/file.csv" --gene.start {START INDEX} --gene.end {END INDEX} 
+```
+
+and we can replace `run_scGTM.py` with either `run_scGTM_Hill_Only.py` or `run_scGTM_Valley_Only.py` if we are only interested in one of the two trends.
+
+Using the data in our `demo` folder, the command is:
+
+```shell
+python run_scGTM_Hill_Only.py --model.iter 120 --model.marginal 'ZIP' --model.save_dir "Demo/Results/" --data.dir "Demo/simu_nb_scGTM_input.csv" --gene.start 1 --gene.end 60
 ```
 
 - `gene_index`: The index of gene that we want to model.
