@@ -57,7 +57,7 @@ and we can replace `run_scGTM.py` with either `run_scGTM_Hill_Only.py` or `run_s
 Using the data in our `demo` folder, the command is:
 
 ```shell
-python run_scGTM_Hill_Only.py --model.iter 120 --model.marginal 'ZIP' --model.save_dir "Demo/Results/" --data.dir "Demo/simu_nb_scGTM_input.csv" --gene.start 1 --gene.end 60
+python run_scGTM_Valley_Only.py --model.iter 120 --model.marginal 'ZIP' --model.save_dir "Demo/Results/" --data.dir "Demo/simu_nb_scGTM_input.csv" --gene.start 1 --gene.end 60
 ```
 
 - `gene_index`: The index of gene that we want to model.
