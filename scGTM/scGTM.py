@@ -14,23 +14,19 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter_num=50, data_dir=None, save_dir=None, plot_args=None):
-
-    #print("Loading data......")
-
-    ## LOAD DATA
-    #data = pd.read_csv(data_dir)
-    #print("Loading finished!")
-
-    ## TAKE NEEDED DATA
-    #t = data.iloc[:, 1]
-    #y1 = np.floor(data.iloc[:, gene_index])
-    #gene_name = data.columns[gene_index]
+    """
+    This function automatically determines Hill- or Valley- trend (line 22).
+    """
 
     ## Flag calculation
     flag = (np.corrcoef(t[t<0.5], y1[t<0.5])[0, 1]) < 0 and (np.corrcoef(t[t>0.5], y1[t>0.5])[0, 1]) > 0
     #flag = False
     print("The need of transformation: " + str(flag))
-    
+
+    ## ESTIMATION
+    print("\nWe are estimating gene %d with marginal %s." % (gene_index, marginal))
+    result = {}
+
     if flag:
         raw = np.copy(y1)
         y1 = np.log(y1 + 1)
@@ -39,10 +35,6 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
     else:
         pass
 
-    ## ESTIMATION
-    print("\nWe are estimating gene %d with marginal %s." % (gene_index, marginal))
-
-    result = {}
     gcost, gbest = estimation(y1, t, marginal, iter_num)
     result['negative_log_likelihood'] = gcost
 

@@ -14,17 +14,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter_num=50, data_dir=None, save_dir=None, plot_args=None):
-
-    #print("Loading data......")
-
-    ## LOAD DATA
-    #data = pd.read_csv(data_dir)
-    #print("Loading finished!")
-
-    ## TAKE NEEDED DATA
-    #t = data.iloc[:, 1]
-    #y1 = np.floor(data.iloc[:, gene_index])
-    #gene_name = data.columns[gene_index]
+    """
+    This function fits Hill-trend only.
+    """
 
     ## Flag calculation
     flag = False
@@ -50,45 +42,44 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         print("\nAlgorithm fails to find reasonable estimation.\n")
 
     if marginal == "ZIP":
+        result['AIC'] = 2*gcost + 2*5
         result['mu'] = gbest[0]; result['k1'] = gbest[1]
         result['k2'] = gbest[2]; result['t0'] = gbest[3]; result['phi'] = "Nah"
         result['alpha'] = gbest[4]; result['beta'] = gbest[5]
-        result['AIC'] = 2*gcost + 2*5
 
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , p:\n",
               np.round(gbest, 2), "\n")
     elif marginal == "ZINB":
         gbest[4] = np.maximum(np.floor(gbest[-2]), 1)
+        result['AIC'] = 2*gcost + 2*6
         result['mu'] = gbest[0]; result['k1'] = gbest[1]; result['k2'] = gbest[2]
         result['t0'] = gbest[3]; result['phi'] = gbest[4]; result['alpha'] = gbest[5]; result['beta'] = gbest[6]
-        result['AIC'] = 2*gcost + 2*6
-        
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , phi , p:\n",
               np.round(gbest, 2), "\n")
     elif marginal == "Poisson":
+        result['AIC'] = 2*gcost + 2*4
         result['mu'] = gbest[0]
         result['k1'] = gbest[1]
         result['k2'] = gbest[2]
         result['t0'] = gbest[3]
         result['phi'] = "Nah"
         result['p'] = "Nah"
-        result['AIC'] = 2*gcost + 2*4
         
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0:\n",
               np.round(gbest[:-1], 2), "\n")
     else:
         gbest[-2] = np.maximum(np.floor(gbest[-2]), 1)
+        result['AIC'] = 2*gcost + 2*5
         result['mu'] = gbest[0]
         result['k1'] = gbest[1]
         result['k2'] = gbest[2]
         result['t0'] = gbest[3]
         result['phi'] = gbest[4]
         result['p'] = "Nah"
-        result['AIC'] = 2*gcost + 2*5
-        
+
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , phi:\n",
               np.round(gbest[:-1], 2), "\n")
@@ -172,8 +163,9 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
     ### Calculate new negative log-likelihood value
     mu_fit, k1_fit, k2_fit, t0_fit = gbest[:4]
     log_mut_fit = link((t), mu_fit, k1_fit, k2_fit, t0_fit)
-    with open(save_dir + str(gene_index - 1) + marginal + '.json', 'w') as fp:
-        json.dump(result, fp)
+
+    #with open(save_dir + str(gene_index - 1) + marginal + '.json', 'w') as fp:
+    #   json.dump(result, fp)
         #w = csv.DictWriter(fp, result.keys())
         #w.writeheader()
         #w.writerow(result)
@@ -187,6 +179,9 @@ def parallel(args):
 
     fitted_values = np.zeros((len(data.iloc[:, 1]), args['gene.end'] - args['gene.start']))
     fitted_values = pd.DataFrame(fitted_values)
+
+    para_values = pd.DataFrame(np.zeros((args['gene.end'] - args['gene.start'], 6)))
+
     count = 0
 
     for i in range(args['gene.start']+1, args['gene.end']+1):
@@ -206,5 +201,8 @@ def parallel(args):
     
     fitted_values.columns = data.columns[args['gene.start']+1: args['gene.end']+1]
     fitted_values.to_csv(args['model.save_dir'] + "fitted_mat.csv", index=False)
+
+    para_values.columns = ['AIC', 'mu', 'k1', 'k2', 't0', 'phi']
+    para_values.to_csv(args['model.save_dir'] + "param_mat.csv", index=False)
 
     return

@@ -15,32 +15,12 @@ warnings.filterwarnings("ignore")
 
 def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter_num=50, data_dir=None, save_dir=None, plot_args=None):
 
-    #print("Loading data......")
-
-    ## LOAD DATA
-    #data = pd.read_csv(data_dir)
-    #print("Loading finished!")
-
-    ## TAKE NEEDED DATA
-    #t = data.iloc[:, 1]
-    #y1 = np.floor(data.iloc[:, gene_index])
-    #gene_name = data.columns[gene_index]
-
-    ## Flag calculation
-    #flag = (np.corrcoef(t[t<0.5], y1[t<0.5])[0, 1]) < 0 and (np.corrcoef(t[t>0.5], y1[t>0.5])[0, 1]) > 0
-    #flag = False
-    #print("The need of transformation: " + str(flag))
+    """
+    This function fits Valley-trend only.
+    """
 
     flag = True
-    
-    #if flag:
-    #    raw = np.copy(y1)
-    #y1 = np.log(y1 + 1)
     b = np.log(np.max(y1)+1)
-    #    y1 = -y1 + np.max(y1)
-    #    y1 = np.floor(np.exp(y1)-1)
-    #else:
-    #    pass
 
     ## ESTIMATION
     print("\nWe are estimating gene %d with marginal %s." % (gene_index, marginal))
@@ -55,42 +35,42 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         print("\nAlgorithm fails to find reasonable estimation.\n")
 
     if marginal == "ZIP":
+        result['AIC'] = 2*gcost + 2*6
         result['mu'] = gbest[0]; result['k1'] = gbest[1]
         result['k2'] = gbest[2]; result['t0'] = gbest[3]; result['phi'] = "Nah"; result['b'] = b
         result['alpha'] = gbest[4]; result['beta'] = gbest[5]
-        #result['AIC'] = 2*gcost + 2*6
-
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , p:\n",
               np.round(gbest, 2), "\n")
     elif marginal == "ZINB":
         gbest[4] = np.maximum(np.floor(gbest[-2]), 1)
+        result['AIC'] = 2*gcost + 2*7
         result['mu'] = gbest[0]; result['k1'] = gbest[1]; result['k2'] = gbest[2]
-        result['t0'] = gbest[3]; result['phi'] = gbest[4]; result['alpha'] = gbest[5]; result['beta'] = gbest[6]; result['b'] = b 
-        #result['AIC'] = 2*gcost + 2*7
+        result['t0'] = gbest[3]; result['phi'] = gbest[4]; result['b'] = b
+        result['alpha'] = gbest[5]; result['beta'] = gbest[6]
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , phi , p:\n",
               np.round(gbest, 2), "\n")
     elif marginal == "Poisson":
+        result['AIC'] = 2 * gcost + 2 * 5
         result['mu'] = gbest[0]
         result['k1'] = gbest[1]
         result['k2'] = gbest[2]
         result['t0'] = gbest[3]
         result['phi'] = "Nah"; result['b'] = b
         result['p'] = "Nah"
-        #result['AIC'] = 2*gcost + 2*5
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0:\n",
               np.round(gbest[:-1], 2), "\n")
     else:
         gbest[-2] = np.maximum(np.floor(gbest[-2]), 1)
+        result['AIC'] = 2*gcost + 2*6
         result['mu'] = gbest[0]
         result['k1'] = gbest[1]
         result['k2'] = gbest[2]
         result['t0'] = gbest[3]
         result['phi'] = gbest[4]; result['b'] = b
         result['p'] = "Nah"
-        #result['AIC'] = 2*gcost + 2*6
         print("Best parameter estimation:\n",
               "mu , k1 , k2 , t0 , phi:\n",
               np.round(gbest[:-1], 2), "\n")
@@ -104,21 +84,16 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         cmap = 'PRGn'
 
     fig, ax = plt.subplots(figsize=(10, 8))
-    #if flag:
-    #    y1 = raw
     log_data = np.log(y1 + 1)
     plt.scatter(t, log_data, s=10, c=log_data, cmap=plt.get_cmap(cmap))
     plt.ylim(np.min(log_data) - 1, np.max(log_data) + 1)
 
     plot_result(gbest, t, color, marginal=marginal, flag=flag, y1=y1)
 
-    #trend = {"True": "Valley", "False": "Hill"}
     trend = {"True": "Valley-shaped", "False": "Hill-shaped"}
-    #plt.title("Gene: " + str(gene_name) + "; Distribution: " + marginal + ';' + " Trend: " + trend[str(flag)], fontsize=25)
     plt.title("Gene: " + str(gene_name) + "\n" + trend[str(flag)] + " scGTM w/ " + marginal, fontsize=24)
 
     plt.text(result['t0']+0.03, -0.75, r"$t_0$", fontsize=24, color=color[2])
-    #plt.show()
 
     plt.savefig(save_dir + str(gene_index-1) + marginal + ".png")
 
@@ -126,9 +101,6 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
     fisher, var, t0_lower, t0_upper = inference(t, gbest, marginal)
     result['t0_lower'] = t0_lower
     result['t0_upper'] = t0_upper
-
-    #print("Inverse Fisher information matrix of first 4 parameters or t0 alone:\n",
-    #      var , "\n")
 
     ## CONFIDENCE INTERVAL
     print("The 95% confidence interval of the activation time t0:\n" +
@@ -176,45 +148,14 @@ def main(gene_index = 100, t=None, y1=None, gene_name=None, marginal="ZIP", iter
         result['Fisher'] = 'Singular'
 
     result['Transform'] = int(flag)
-        ## SAVE ESTIMATION RESULTS
-    ### Calculate new negative log-likelihood value
+
+    ## SAVE ESTIMATION RESULTS
     mu_fit, k1_fit, k2_fit, t0_fit = gbest[:4]
     log_mut_fit = link((t), mu_fit, k1_fit, k2_fit, t0_fit)
     log_mut_fit = - log_mut_fit + np.log(np.max(y1) + 1)
-    if marginal == "ZINB":
-        #mut = np.maximum(np.exp(log_mut_fit) , 0.1)
-        #phi = np.maximum((gbest[4]), 1)
-        #p0 = phi / (mut + phi)
-        #cache = nbinom.pmf(y1, phi, p0) + 1e-300
 
-        ## Zero-inflation
-        #p = 1 / (1 + np.exp(gbest[5] * np.log(mut) + gbest[6]))
-        #result['negative_log_likelihood'] = - np.log(cache * (1 - p) + p * (y1 == 0)).sum()
-        result['AIC'] = 2*result['negative_log_likelihood'] + 2*7
-        
-    elif marginal == "NB":
-        #mut = np.maximum(np.exp(log_mut_fit) , 0.1)
-        #phi = np.maximum((gbest[4]), 1)
-        #p0 = mut / (mut + phi)
-        #cache = nbinom.pmf(y1, phi, 1 - p0) + 1e-300
-        #result['negative_log_likelihood'] = -np.log(cache).sum()
-        result['AIC'] = 2*result['negative_log_likelihood'] + 2*6
-    elif marginal == "ZIP":
-        #mut = np.maximum(np.exp(log_mut_fit), 0.1)
-        #cache = poisson.pmf(y1, mut) + 1e-300
-
-        ## Zero-inflation
-        #p = 1 / (1 + np.exp(gbest[4] * np.log(mut) + gbest[5]))
-
-        #result['negative_log_likelihood'] =  - np.log(cache * (1 - p) + p * (y1 == 0)).sum()
-        result['AIC'] = 2*result['negative_log_likelihood'] + 2*6
-    else:
-        #mut = np.maximum(np.exp(log_mut_fit) , 0.1)
-        #result['negative_log_likelihood'] = -np.log(poisson.pmf(y1, mut) + 1e-300).sum()
-        result['AIC'] = 2*result['negative_log_likelihood'] + 2*5
-
-    with open(save_dir + str(gene_index - 1) + marginal + '.json', 'w') as fp:
-        json.dump(result, fp)
+    #with open(save_dir + str(gene_index - 1) + marginal + '.json', 'w') as fp:
+    #   json.dump(result, fp)
         #w = csv.DictWriter(fp, result.keys())
         #w.writeheader()
         #w.writerow(result)
@@ -228,6 +169,9 @@ def parallel(args):
 
     fitted_values = np.zeros((len(data.iloc[:, 1]), args['gene.end'] - args['gene.start']))
     fitted_values = pd.DataFrame(fitted_values)
+
+    para_values = pd.DataFrame(np.zeros((args['gene.end'] - args['gene.start'], 7)))
+
     count = 0
 
     for i in range(args['gene.start']+1, args['gene.end']+1):
@@ -243,10 +187,14 @@ def parallel(args):
                 'cmap': 'autumn',
              })
         fitted_values.iloc[:, count] = output['fitted_values']
+        para_values.iloc[count, :] = list(output['result'].values())[1:8]
         count += 1
     
     fitted_values.columns = data.columns[args['gene.start']+1: args['gene.end']+1]
     fitted_values.to_csv(args['model.save_dir'] + "fitted_mat.csv", index=False)
+
+    para_values.columns = ['AIC', 'mu', 'k1', 'k2', 't0', 'phi', 'b']
+    para_values.to_csv(args['model.save_dir'] + "param_mat.csv", index=False)
 
     return
 
