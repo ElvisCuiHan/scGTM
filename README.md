@@ -7,7 +7,7 @@
 
 # scGTM: Single-cell generalized trend model
 
-**scGTM** (orignally named as scKGAM) is the abbreviation for *Single-cell Gene Expression Generalized Trend Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data.
+**scGTM** (orignally named as scKGAM) is the abbreviation for *Single-cell Gene Expression Generalized Trend Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data. The paper is available at [bioRXiv](https://www.biorxiv.org/content/10.1101/2021.11.25.470059v1).
 
 It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scGKM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
@@ -68,7 +68,7 @@ python run_scGTM_Valley_Only.py --model.iter 120 --model.marginal 'ZIP' --model.
 - `gene.start`: Index of the first gene to fit.
 - `gene.end`: Index of the last gene to fit.
 
-In the `scGTM.py` file, we can modify the arguments to let the model outputs user-defined colors.
+In the `scGTM.py` file (and the other two), we can modify the arguments to let the model outputs user-defined colors.
 
 - `plot_args`: A dictionary with keys *color* and *cmap*. *color* is a 4x1 vector and *cmap* is a string. For example:
 ```python
@@ -78,10 +78,10 @@ plot_args={
          }
 ```
 
-If you want to estimate many genes with different marginals, you can first change the data directory in the function `parallel` and then use the following command in terminal:
+If one wants to estimate many genes with different marginals, we can first change the data directory in the function `parallel` and then use the command in terminal:
 
 ```bash
-python run_scGTM.py  --gene.start {START INDEX} --gene.end {END INDEX} --model.marginal "NB" --model.save_dir "YourTargetPath" --model.iter 150
+python run_scGTM_Hill_Only.py  --gene.start {START INDEX} --gene.end {END INDEX} --model.marginal "NB" --model.save_dir "YourTargetPath" --model.iter 150
 ```
 
 Note the data should be in *.csv* format. The **main** function will return a *.json* file and *.png* figure. 
