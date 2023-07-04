@@ -33,6 +33,7 @@ $ python run_scGTM.py --model.iter 100 --model.marginal 'ZIP' --model.save_dir "
 scGTM provides a high-level implementation of various marginal distributions including Poisson, negative binomial (NB), zero-inflated Poisson (ZIP) and zero-inflatd negative binomial (ZINB). Further, it utilizes particle swarm optimization algorithm in the package ***pyswarms*** to optimize the objective function. Thus, it aims to be user-friendly and customizable.
 
 The data should be a cell-by-gene matrix where the first column corresponding to the pseudotime:
+
 ```math
 Index Pseudotime Gene1 Gene2 ...
 1.    t1         y11   y12   ...
