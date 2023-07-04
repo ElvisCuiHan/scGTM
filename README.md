@@ -34,13 +34,13 @@ scGTM provides a high-level implementation of various marginal distributions inc
 
 The data should be a cell-by-gene matrix where the first column corresponding to the pseudotime:
 
-```math
-Index Pseudotime Gene1 Gene2 ...
-1.    t1         y11   y12   ...
-2.    t2         y21   y22   ... 
-3.    t3         y31   y32   ...
-4.    t4         y41   y42   ...
-```
+| Index | Pseudotime | Gene1 | Gene2 | ... |
+|-------|------------|-------|-------|-----|
+| 1.    | t1         | y11   | y12   | ... |
+| 2.    | t2         | y21   | y22   | ... |
+| 3.    | t3         | y31   | y32   | ... |
+| 4.    | t4         | y41   | y42   | ... |
+
 A typical data structure will be of the following form:
 
 <img src="https://github.com/ElvisCuiHan/scKGAM/blob/main/Figures/data.png" width="700" />
