@@ -7,7 +7,7 @@
 
 # scGTM: Single-cell generalized trend model
 
-**scGTM** (orignally named as scKGAM) is the abbreviation for *Single-cell Gene Expression Generalized Trend Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data. The paper is available at [bioRXiv](https://www.biorxiv.org/content/10.1101/2021.11.25.470059v1).
+**scGTM** (orignally named as scKGAM) is the abbreviation for *Single-cell Gene Expression Generalized Trend Model*. This is a Python package for modeling the statistical relationship between pseudotime and gene expression data. The paper is published in [Bioinformatics](https://academic.oup.com/bioinformatics/article/38/16/3927/6618524) and is also available at [bioRXiv](https://www.biorxiv.org/content/10.1101/2021.11.25.470059v1).
 
 It is intended for bioinformatic scientists, applied statisticians, and students who prefer using Metaheuristic algorithms in solving their own bioinformatic optimization problems. scGKM is able to provide various marginal gene distributions with interpretable regression functions. Check out more features!
 
